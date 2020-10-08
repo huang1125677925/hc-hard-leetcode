@@ -1,4 +1,4 @@
-#encoding=utf-8
+                  #encoding=utf-8
 def mergeSort(arr):
     if len(arr)<=1:
         return arr
@@ -68,10 +68,40 @@ def quicksort(arr):
     
     return quicksort(left) + [temp] + quicksort(right)
 
+
+def createheap(arr):
+    length = len(arr)
+    for i in range(length/2, -1, -1):
+        downadjust(arr, i, length)
+
+def downadjust(arr, i, length):
+    cur, k = i, i*2
+    while k <length:
+        if k+1 < length and arr[k+1] > arr[k]:
+            k = k+1
+        
+        if arr[cur] >= arr[k]:
+            break
+        else:
+            arr[cur], arr[k] = arr[k], arr[cur]
+            cur = k
+            k = k*2
+
+
+
+def sortheap(arr):
+    length = len(arr)
+    while length > 1:
+        arr[length-1], arr[0] = arr[0], arr[length-1]
+        downadjust(arr, 0, length-1)
+        length -=1
+        
 # print(quicksort([5, 7, 8, 10, 90, 100, 200, 3, -1]))
 arr = [0,1,-9,100,34,87,2,-100,93,200]
 # print(OriginMergeSort(arr, 0, len(arr)-1))
 # #这个不是原地排序
 # print arr
-print mergeSort(arr)
+createheap(arr)
+sortheap(arr)
+print arr
 

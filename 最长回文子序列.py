@@ -54,9 +54,38 @@ class Solution(object):
         return False
 
 
+class Solution2(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        n = len(s)
+        flag = [[0] * n for _ in range(n)]
+        res = [0, '']
+        for i in range(n):
+            flag[i][i] = 1
+            if res[0] < 1:
+                res = [1, s[i]]
+            if i < n - 1 and s[i] == s[i + 1]:
+                flag[i][i + 1] = 1
+                if res[0] < 2:
+                    res = [2, s[i: i + 2]]
+        
+        for i in range(3, n+1):
+            for j in range(n - i + 1):
+                start, end = j, j + i - 1
+                if s[start] == s[end] and flag[start + 1][end - 1] == 1:
+                    flag[start][end] = 1
+                    if res[0] < i:
+                        res = [i, s[start:end + 1]]
+        
+        return res[1]
 # print Solution().longestWord(["cat","banana","dog","nana","walk","walker","dogwalker"])
 
-a = ["qlmql","qlmqlmqqlqmqqlq","mqqlqmqqlqmqqlq","mqqlq","mqqlqlmlsmqq","qmlmmmmsm","lmlsmqq","slmsqq","mslqssl","mqqlqmqqlq"]
-a.sort(key = lambda x:len(x))
-a = a[::-1]
-print a
+# a = ["qlmql","qlmqlmqqlqmqqlq","mqqlqmqqlqmqqlq","mqqlq","mqqlqlmlsmqq","qmlmmmmsm","lmlsmqq","slmsqq","mslqssl","mqqlqmqqlq"]
+# a.sort(key = lambda x:len(x))
+# a = a[::-1]
+# print a
+
+print Solution2().longestPalindrome("ccc")

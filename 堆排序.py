@@ -1,22 +1,23 @@
+#encoding=utf-8
 def buildMaxHeap(arr):
-    import math
-    # 初始化建堆，先从导数第二层点开始，
+    # 这建的是大根堆
+    for i in range(len(arr)//2,-1,-1):
+        heapify(arr,i)
+
+def buildMinHeap(arr):
+    # 这建的是大根堆
     for i in range(len(arr)//2,-1,-1):
         heapify(arr,i)
 
 def heapify(arr, i):
-    
     left = 2*i+1
-    right = 2*i+2
-    largest = i
-    if left < arrLen and arr[left] > arr[largest]:
-        largest = left
-    if right < arrLen and arr[right] > arr[largest]:
-        largest = right
+    while left < arrLen:
+        if left + 1 < arrLen and arr[left+1] > arr[left]:
+            left = left+1
+        arr[left], arr[i] = arr[i], arr[left]
+        i = left
+        left = left*2 +1
 
-    if largest != i:
-        swap(arr, i, largest)
-        heapify(arr, largest)
 
 def swap(arr, i, j):
     arr[i], arr[j] = arr[j], arr[i]
@@ -32,30 +33,39 @@ def heapSort(arr):
     return arr
 
 
+
+
+# ----------------------------------
+def minHeapify(arr, heapsize, index):
+    left = 2 * index + 1
+    mini = index
+    while left < heapsize:
+        if left+1 < heapsize and arr[left] > arr[left+1]:
+            left = left+1
+        if arr[index] > arr[left]: arr[index], arr[left] = arr[left], arr[index]
+        index = left
+        left = 2*index +1
+
+
+def buildMinHeap_1(list):
+    heapSize = len(list)
+    if heapSize < 2:
+        return
+    for i in range(heapSize / 2 - 1, -1, -1):
+        minHeapify(list, heapSize, i)
+
+
+def heapSort_1(list):
+    buildMinHeap_1(list)
+    for i in range(len(list) - 1, -1, -1):
+        list[0], list[i] = list[i], list[0]
+        minHeapify(list, i, 0)
+    return list
+
+
+
+
 print(heapSort([1,9,0,-1,-4,43,100]))
+print(heapSort_1([1,9,0,-1,-4,43,100, 1000]))
 
-def build(arr):
-    for i in range(len(arr)//2,-1,-1):
-        next_down(arr,i)
-        
-def next_down(arr,i):
-    left=2*i
-    right=2*i+1
-    
-    largest=i
-    if left<arrlen and arr[left]>arr[i]:
-        largest=left
-    if right<arrlen and arr[right]>arr[i]:
-        largest=right
-    if largest!=i:
-        swap(arr,largest,i)
-        next_down(arr,largest)
 
-def heapSort(arr):
-    global arrlen
-    arrlen=len(arr)
-    build(arr)
-    for i in range(len(arr)-1,0,-1):
-        swap(arr,i,0)
-        arrLen-=1
-        next_down(arr,0)
